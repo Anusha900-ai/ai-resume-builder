@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ resume.name }} - Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="resume">
+        <h1>{{ resume.name }}</h1>
+        <p>{{ resume.email }} | {{ resume.phone }}</p>
+
+        <h2>Target Role</h2>
+        <p>{{ resume.target_role }}</p>
+
+        <h2>Skills</h2>
+        <p>{{ resume.skills }}</p>
+
+        <h2>Education</h2>
+        <p>{{ resume.education }}</p>
+
+        <h2>Projects</h2>
+        <p>{{ resume.projects }}</p>
+
+        <h2>Experience</h2>
+        <p>{{ resume.experience }}</p>
+
+        <a href="/">← Edit details</a>
+    </main>
+</body>
+</html>

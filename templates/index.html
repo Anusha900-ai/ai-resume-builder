@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Resume Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <h1>AI Resume Builder</h1>
+        <p>Enter your details to create your resume.</p>
+
+        <form action="/preview" method="POST">
+            <label>Full Name</label>
+            <input type="text" name="name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Phone Number</label>
+            <input type="tel" name="phone" required>
+
+            <label>Target Job Role</label>
+            <input type="text" name="target_role" placeholder="Example: Python Developer" required>
+
+            <label>Skills</label>
+            <textarea name="skills" placeholder="Example: Python, Flask, SQL, Git" required></textarea>
+
+            <label>Education</label>
+            <textarea name="education" placeholder="Example: BCA, ABC College, 2023–2026" required></textarea>
+
+            <label>Projects</label>
+            <textarea name="projects" placeholder="Describe your projects"></textarea>
+
+            <label>Experience</label>
+            <textarea name="experience" placeholder="Describe internship, work, or volunteer experience"></textarea>
+
+            <button type="submit">Create Resume Preview</button>
+        </form>
+    </main>
+</body>
+</html>
