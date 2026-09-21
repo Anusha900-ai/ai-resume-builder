@@ -6,25 +6,37 @@
 </head>
 <body>
     <main class="resume">
-        <h1>{{ resume.name }}</h1>
-        <p>{{ resume.email }} | {{ resume.phone }}</p>
+        <header class="resume-header">
+            <h1>{{ resume.name }}</h1>
+            <p>{{ resume.email }} | {{ resume.phone }}</p>
+            <p class="role">{{ resume.target_role }}</p>
+        </header>
 
-        <h2>Target Role</h2>
-        <p>{{ resume.target_role }}</p>
+        <section>
+            <h2>Skills</h2>
+            <p class="content-text">{{ resume.skills }}</p>
+        </section>
 
-        <h2>Skills</h2>
-        <p>{{ resume.skills }}</p>
+        <section>
+            <h2>Education</h2>
+            <p class="content-text">{{ resume.education }}</p>
+        </section>
 
-        <h2>Education</h2>
-        <p>{{ resume.education }}</p>
+        {% if resume.projects %}
+        <section>
+            <h2>Projects</h2>
+            <p class="content-text">{{ resume.projects }}</p>
+        </section>
+        {% endif %}
 
-        <h2>Projects</h2>
-        <p>{{ resume.projects }}</p>
+        {% if resume.experience %}
+        <section>
+            <h2>Experience</h2>
+            <p class="content-text">{{ resume.experience }}</p>
+        </section>
+        {% endif %}
 
-        <h2>Experience</h2>
-        <p>{{ resume.experience }}</p>
-
-        <a href="/">← Edit details</a>
+        <a class="edit-link" href="/">← Edit resume details</a>
     </main>
 </body>
 </html>
