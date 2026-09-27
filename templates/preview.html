@@ -12,6 +12,20 @@
             <p class="role">{{ resume.target_role }}</p>
         </header>
 
+        <section class="ats-card">
+            <h2>ATS Match Score: {{ ats.score }}%</h2>
+
+            <h3>Matched Keywords</h3>
+            <p>
+                {{ ats.matched_keywords | join(", ") or "No keywords matched yet." }}
+            </p>
+
+            <h3>Missing Keywords</h3>
+            <p>
+                {{ ats.missing_keywords | join(", ") or "No missing keywords." }}
+            </p>
+        </section>
+
         <section>
             <h2>Skills</h2>
             <p class="content-text">{{ resume.skills }}</p>
@@ -35,18 +49,21 @@
             <p class="content-text">{{ resume.experience }}</p>
         </section>
         {% endif %}
-        <form action="/download-pdf" method="POST">
-    <input type="hidden" name="name" value="{{ resume.name }}">
-    <input type="hidden" name="email" value="{{ resume.email }}">
-    <input type="hidden" name="phone" value="{{ resume.phone }}">
-    <input type="hidden" name="target_role" value="{{ resume.target_role }}">
-    <input type="hidden" name="skills" value="{{ resume.skills }}">
-    <input type="hidden" name="education" value="{{ resume.education }}">
-    <input type="hidden" name="projects" value="{{ resume.projects }}">
-    <input type="hidden" name="experience" value="{{ resume.experience }}">
 
-    <button type="submit">Download PDF Resume</button>
-</form>
+        <form action="/download-pdf" method="POST">
+            <input type="hidden" name="name" value="{{ resume.name }}">
+            <input type="hidden" name="email" value="{{ resume.email }}">
+            <input type="hidden" name="phone" value="{{ resume.phone }}">
+            <input type="hidden" name="target_role" value="{{ resume.target_role }}">
+            <input type="hidden" name="job_description" value="{{ resume.job_description }}">
+            <input type="hidden" name="skills" value="{{ resume.skills }}">
+            <input type="hidden" name="education" value="{{ resume.education }}">
+            <input type="hidden" name="projects" value="{{ resume.projects }}">
+            <input type="hidden" name="experience" value="{{ resume.experience }}">
+
+            <button type="submit">Download PDF Resume</button>
+        </form>
+
         <a class="edit-link" href="/">← Edit resume details</a>
     </main>
 </body>

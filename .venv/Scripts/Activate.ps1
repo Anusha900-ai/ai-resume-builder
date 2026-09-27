@@ -1,4 +1,6 @@
-<#
+git add .
+git commit -m "Add ATS keyword matching score"
+git push<#
 .Synopsis
 Activate a Python virtual environment for the current PowerShell session.
 

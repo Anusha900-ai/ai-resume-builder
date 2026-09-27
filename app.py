@@ -1,4 +1,58 @@
-f
+from io import BytesIO
+from xml.sax.saxutils import escape
+import re
+
+from flask import Flask, render_template, request, send_file
+from reportlab.lib.colors import HexColor
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/preview", methods=["POST"])
+def preview():
+    resume = get_resume_data()
+    ats = calculate_ats_score(resume)
+
+    return render_template("preview.html", resume=resume, ats=ats)
+
+
+@app.route("/download-pdf", methods=["POST"])
+def download_pdf():
+    resume = get_resume_data()
+
+    pdf_file = BytesIO()
+
+    document = SimpleDocTemplate(
+        pdf_file,
+        pagesize=A4,
+        rightMargin=50,
+        leftMargin=50,
+        topMargin=50,
+        bottomMargin=50,
+    )
+
+    styles = getSampleStyleSheet()
+
+    name_style = ParagraphStyle(
+        "ResumeName",
+        parent=styles["Title"],
+        fontSize=24,
+        textColor=HexColor("#1e3a8a"),
+        spaceAfter=8,
+        alignment=1,
+    )
+
+    contact_style = ParagraphStyle(
+        "Contact",
+        parent=styles["Normal"],
         alignment=1,
         spaceAfter=8,
     )
@@ -59,10 +113,58 @@ def get_resume_data():
         "email": request.form.get("email", ""),
         "phone": request.form.get("phone", ""),
         "target_role": request.form.get("target_role", ""),
+        "job_description": request.form.get("job_description", ""),
         "skills": request.form.get("skills", ""),
         "education": request.form.get("education", ""),
         "projects": request.form.get("projects", ""),
         "experience": request.form.get("experience", ""),
+    }
+
+
+def calculate_ats_score(resume):
+    stop_words = {
+        "and", "the", "with", "for", "that", "this", "will", "are",
+        "you", "your", "from", "our", "their", "have", "has", "must",
+        "job", "role", "work", "team", "using", "looking", "strong",
+        "skills", "experience", "knowledge", "candidate",
+    }
+
+    job_words = re.findall(
+        r"[a-zA-Z][a-zA-Z0-9+#.]*",
+        resume["job_description"].lower(),
+    )
+
+    keywords = sorted(
+        {word for word in job_words if word not in stop_words and len(word) > 2}
+    )
+
+    resume_text = " ".join(
+        [
+            resume["target_role"],
+            resume["skills"],
+            resume["education"],
+            resume["projects"],
+            resume["experience"],
+        ]
+    ).lower()
+
+    matched_keywords = [
+        keyword for keyword in keywords if keyword in resume_text
+    ]
+
+    missing_keywords = [
+        keyword for keyword in keywords if keyword not in resume_text
+    ]
+
+    score = 0
+
+    if keywords:
+        score = round((len(matched_keywords) / len(keywords)) * 100)
+
+    return {
+        "score": score,
+        "matched_keywords": matched_keywords,
+        "missing_keywords": missing_keywords,
     }
 
 
